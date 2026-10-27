@@ -30,6 +30,10 @@ function conf() {
   let seg = (kino.config.get("config") || "").trim();
   // Se acepta pegar: la URL completa del manifiesto, el enlace de
   // instalación (stremio://…) o solo el segmento de configuración.
+  // Si el pegado trae la dirección dos veces o texto extra alrededor,
+  // manda la ÚLTIMA URL que aparezca: es el enlace completo.
+  const urls = seg.match(/https?:\/\/[^\s"']+/gi);
+  if (urls && urls.length) seg = urls[urls.length - 1];
   seg = seg.replace(/^stremio:\/\//i, "");
   seg = seg.replace(/^https?:\/\/[^/]+\//i, "");
   seg = seg.replace(/\/manifest\.json$/i, "").replace(/\/+$/, "");
